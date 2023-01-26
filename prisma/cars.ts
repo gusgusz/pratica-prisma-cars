@@ -1,4 +1,4 @@
-export const cars = [
+export const carss = [
     {
       "id": 1,
       "model": "SONATA",
