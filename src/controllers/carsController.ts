@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 
 import { Request, Response } from "express";
 import carService from "../services/carService.js";
+import { Car } from "../protocols/carsProtocols";
 
 async function getAllCars(req: Request, res: Response) {
   try {
@@ -46,7 +47,7 @@ async function deleteCar(req: Request, res: Response) {
 
   try {
     await carService.deleteCar(carId);
-    res.send(httpStatus.OK);
+    res.sendStatus(httpStatus.OK);
   } catch (e) {
     console.log(e);
     if (e.name === "NotFoundError") {
@@ -57,11 +58,30 @@ async function deleteCar(req: Request, res: Response) {
   }
 }
 
+async function updateCar(req: Request, res: Response) {
+  
+  const carId = parseInt(req.params.carId);
+  const car = req.body as Car;
+
+  try {
+    await carService.updateCar(carId, car);
+    res.sendStatus(httpStatus.OK);
+  } catch (e) {
+    console.log(e);
+    if (e.name === "NotFoundError") {
+      return res.sendStatus(httpStatus.NOT_FOUND);
+    }
+
+    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+}
 const carController = {
   getAllCars,
   getSpecificCar,
   createCar,
-  deleteCar
+  deleteCar,
+  updateCar
 }
 
 export default carController;

@@ -1,6 +1,7 @@
 import notFoundError from "../errors/notFoundError.js";
 import conflictError from "../errors/conflictError.js";
 import carRepository from "../repository/carRepository.js";
+import { Car } from "../protocols/carsProtocols";
 
 async function getCars() {
   const cars = await carRepository.getCars();
@@ -30,11 +31,16 @@ async function deleteCar(id: number) {
   await carRepository.deleteCar(id);
 }
 
+async function updateCar(id: number, car: Car) {
+  await carRepository.updateCar(id, car);
+}
+
 const carService = {
   getCars,
   getCar,
   createCar,
-  deleteCar
+  deleteCar,
+  updateCar
 }
 
 export default carService;
